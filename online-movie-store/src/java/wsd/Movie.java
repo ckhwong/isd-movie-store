@@ -15,7 +15,8 @@ public class Movie implements Serializable{
     private int movieID;
     private String title;
     private String genre;
-    private String year;
+    private int duration;
+    private int year;
     private double price;
     private int stock;
 
@@ -23,11 +24,12 @@ public class Movie implements Serializable{
         super();
     }
 
-    public Movie(int movieID, String title, String genre, String year, 
-            double price, int stock) {
+    public Movie(int movieID, String title, String genre, int duration, 
+            int year, double price, int stock) {
         this.movieID = movieID;
         this.title = title;
         this.genre = genre;
+        this.duration = duration;
         this.year = year;
         this.price = price;
         this.stock = stock;
@@ -37,7 +39,7 @@ public class Movie implements Serializable{
         return movieID;
     }
 
-    public void setMovieID(int MovieID) {
+    public void setMovieID(int movieID) {
         this.movieID = movieID;
     }
 
@@ -57,11 +59,19 @@ public class Movie implements Serializable{
         this.genre = genre;
     }
 
-    public String getYear() {
+    public int getDuration() {
+        return duration;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
+    
+    public int getYear() {
         return year;
     }
 
-    public void setYear(String year) {
+    public void setYear(int year) {
         this.year = year;
     }
 
