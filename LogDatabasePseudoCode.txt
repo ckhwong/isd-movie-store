@@ -1,0 +1,64 @@
+William's Pseudo Code
+
+View Algorithms:
+
+PrepareLog() {
+	Get Time and Date
+	Store Time and Date in the Session
+}
+
+DisplayLogs(UserID[, Date]) {
+	Invoke Controller's "GetLogData"
+	Return Logs for assembly into the page
+	
+}
+
+CreateLog() {
+	Get Current Time and Date
+	Get Session Stored Time and Date from Login
+	Pass these through the Controller's "CreateLog"
+}
+
+DeleteLog(LogID, UserID) {
+	Get the relevant/correlating Log
+	Pass the LogID and UserID through the Controller's "DeleteLog"
+}
+
+Controller Algorithms:
+
+GetLogData(UserID[, Date]) {
+	Pass the UserID and Requested Date to the Model's "SelectLogs"
+}
+
+CreateLogData(UserID, Date1, Time1, Date2, Time2) {
+	Assembles and passes data pertaining to the session to the model to be published via the Model's
+		"CreateLog" algorithm
+}
+
+DeleteLog(LogID, UserID) {
+	Passes the UserID and the relevant LogID to the model's "DeleteLog" algorithm
+}
+
+Model Algorithms:
+
+SelectLogs(UserID[, Date]) {
+	Query the Database for Logs pertaining to the specific UserID and start Date
+	Returns a "table" of Logs
+}
+
+CreateLog(UserID, Date1, Time1, Date2, Time2) {
+	Query the Log Table to create a log containing the following:
+		UserID
+		Initial Date
+		Initial Time
+		Final Date
+		Final Time
+}
+
+DeleteLog(UserID, LogID) {
+	If (The UserID correlates to an Admin) {
+		Delete the Log correlating to the LogID
+	}
+}
+
+
