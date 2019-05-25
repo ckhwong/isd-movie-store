@@ -16,24 +16,27 @@ public class Order implements Serializable{
     private int userID;
     private int movieID;
     private String orderDate;
+    private String orderDeliveryType;
+    private double orderDeliveryPrice;
     private double orderOrigPrice;
     private int orderDiscount;
     private double orderFinalPrice;
-    private String orderDeliveryType;
     
     public Order() {
         super();
     }
 
-    public Order(int orderID, int userID, int movieID, String orderDate, 
-            double orderOrigPrice, int orderDiscount, String orderDeliveryType) {
+    public Order(int orderID, int userID, int movieID, String orderDate,
+            String orderDeliveryType, double orderDeliveryPrice, 
+            double orderOrigPrice, int orderDiscount) {
         this.orderID = orderID;
         this.userID = userID;
         this.movieID = movieID;
         this.orderDate = orderDate;
+        this.orderDeliveryType = orderDeliveryType;
+        this.orderDeliveryPrice = orderDeliveryPrice;
         this.orderOrigPrice = orderOrigPrice;
         this.orderDiscount = orderDiscount;
-        this.orderDeliveryType = orderDeliveryType;
     }
 
     public int getOrderID() {
@@ -68,6 +71,23 @@ public class Order implements Serializable{
         this.orderDate = orderDate;
     }
 
+        public String getOrderDeliveryType() {
+        return orderDeliveryType;
+    }
+
+    public void setOrderDeliveryType(String orderDeliveryType) {
+        this.orderDeliveryType = orderDeliveryType;
+    }
+    
+    public double getOrderDeliveryPrice() {
+        return orderDeliveryPrice;
+    }
+
+    public void setOrderDeliveryPrice(double orderDeliveryPrice) {
+        this.orderDeliveryPrice = orderDeliveryPrice;
+    }
+
+    
     public double getOrderOrigPrice() {
         return orderOrigPrice;
     }
@@ -94,14 +114,6 @@ public class Order implements Serializable{
         int discount = getOrderDiscount();
         double discountPercent = 1 - discount/100;
         orderFinalPrice = origPrice * discountPercent;
-    }
-    
-    public String getOrderDeliveryType() {
-        return orderDeliveryType;
-    }
-
-    public void setOrderDeliveryType(String orderDeliveryType) {
-        this.orderDeliveryType = orderDeliveryType;
     }
     
 }
