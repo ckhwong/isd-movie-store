@@ -3,9 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/ckhwong008/Documents/GitHub/isd-movie-store/online-movie-store/web/movie-catalogue.jsp</file>
-            <file>file:/C:/Users/ckhwong008/Documents/GitHub/isd-movie-store/online-movie-store/web/home.html</file>
-            <file>file:/C:/Users/ckhwong008/Documents/GitHub/isd-movie-store/online-movie-store/src/java/wsd/Movie.java</file>
+            <file>file:/C:/Users/ckhwong008/Documents/GitHub/isd-movie-store/online-movie-store/nbproject/build-impl.xml</file>
+            <file>file:/C:/Users/ckhwong008/Documents/GitHub/isd-movie-store/online-movie-store/web/myorders.jsp</file>
+            <file>file:/C:/Users/ckhwong008/Documents/GitHub/isd-movie-store/online-movie-store/src/java/wsd/model/Order.java</file>
+            <file>file:/C:/Users/ckhwong008/Documents/GitHub/isd-movie-store/online-movie-store/web/createorder.jsp</file>
+            <file>file:/C:/Users/ckhwong008/Documents/GitHub/isd-movie-store/online-movie-store/src/java/wsd/controller/ConnServlet.java</file>
+            <file>file:/C:/Users/ckhwong008/Documents/GitHub/isd-movie-store/online-movie-store/web/WEB-INF/web.xml</file>
         </group>
     </open-files>
 </project-private>
