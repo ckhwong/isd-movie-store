@@ -6,6 +6,8 @@
 package wsd.model.dao;
 
 import java.sql.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import wsd.model.Log;
 
 /**
@@ -25,6 +27,22 @@ public class DBLogManager {
     }
     
     // methods
+    
+    // Check if a given date is valid
+    public boolean isValidDate(String checkDate) {
+        
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        dateFormat.setLenient(false);
+        
+        try { 
+            dateFormat.parse(checkDate.trim());
+        } catch (ParseException pe) {
+            return false;
+        }
+        
+        return true;
+    }
+    
     
     // Create a log to enter into the database
     public void createLog(int logID, int userID, Date initialDate, Date finalDate) throws SQLException {
@@ -85,6 +103,75 @@ public class DBLogManager {
         }
         
         return logList;
+        
+    }
+    
+    // Get all Logs for a specific user with a specific initial login date
+    public Log[] getLogs(int userID, String checkDate) throws SQLException {
+        
+        if (isValidDate(checkDate)) {
+            
+            Log[] logList;
+            
+            String searchQueryString = "select * from Logs where userID='" 
+                   + userID + "'";
+                
+            ResultSet rs = st.executeQuery(searchQueryString);
+            
+            int resultInt = 0;
+            
+            int resultCount = 0;
+            if (rs.last()) {
+                resultCount = rs.getRow();
+                rs.beforeFirst();
+            }
+            
+            logList = new Log[resultCount];
+            
+            while (rs.next()) {
+                
+                int lID = Integer.parseInt(rs.getString("logID"));
+                int uID = Integer.parseInt(rs.getString("userID"));
+                Date iDate = Date.valueOf(rs.getString("initialDate"));
+                Date fDate = Date.valueOf(rs.getString("finalDate"));
+                
+                logList[resultInt] = new Log(lID, uID, iDate, fDate);
+                
+                resultInt++;
+            }
+            
+            String comparatorString = "";
+            
+            
+            resultCount = 0;
+            resultInt = 0;
+            while (resultCount < logList.length) {
+                comparatorString = logList[resultCount].getInitialDateAsSolitaryString();
+                if (comparatorString.equals(checkDate)) {
+                    resultInt++;
+                }
+                
+                resultCount++;
+            }
+            
+            Log[] finalLogList = new Log[resultInt];
+            
+            resultCount = 0;
+            resultInt = 0;
+            while (resultCount < logList.length) {
+                comparatorString = logList[resultCount].getInitialDateAsSolitaryString();
+                if (comparatorString.equals(checkDate)) {
+                    finalLogList[resultInt] = logList[resultCount];
+                    resultInt++;
+                }
+                
+                resultCount++;
+            }
+            
+            return finalLogList;
+        }
+        
+        return new Log[0];
         
     }
     
