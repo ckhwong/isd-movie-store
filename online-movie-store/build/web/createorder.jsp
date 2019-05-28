@@ -4,6 +4,11 @@
     Author     : Christopher Wong
 --%>
 
+<%@page import="wsd.model.dao.*"%>
+<%@page import="wsd.model.*"%>
+<%@page import="wsd.controller.*"%>
+<%@page import="java.util.*"%>
+<%@page import="java.sql.*"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -13,92 +18,51 @@
         <script type="text/javascript" src="js/script.js"></script>
         <title>Create Order</title>
     </head>
+    <%
+        //String log;
+        // User user = (User) session.getAttribute("user");
+        //DBOrderManager manager = (DBOrderManager)session.getAttribute("manager");
+        String userID = "55550000";
+        /* if (user != null) {
+            log = " &lt " + user.getName() + " &gt";
+        } else {
+            log = " &lt " + "Guest User" + " &gt";
+        }*/
+
+        // Movie movie = (movie) session.getAttribute("movie"); 
+        String movieID = "4448444";
+    %>
     <body onload="startTime()"  bgcolor="#CC9933" >
         <div><span class="time" id="time" ></span></div>
         <center>
             <h1>Online Movie Store: Create Order</h1> <br>
             <button class="button" type="button" onclick="location.href = 'home.html'" > Home Page </button><br>
-            <h2>Enter your order details:</h2> 
+            <h2>Check order details:</h2> 
         </center>
-        <form>
+        <form action="ordersubmitted.jsp" method="post">
             <center>
-                <table cellpadding="5">
+                <% {/*if (user != null) {
+                        if (user.getID() != 99999999){ */
+                } %> 
+                <% {/* //fill table here */} %> 
+                <% {/*} else { */} %> 
+                <table cellpadding="5" >
+                    <% {/*if (movie != null) {*/ } %>
                     <tr>
-                        <td>Account Type:</td>
-                        <td> 
-                            <input class="button" type="submit" value="User" name="userAcc">
-                            &nbsp; 
-                            <input class="button" type="submit" value="Guest" name="guestAcc"><br>
-                        </td>
+                        <td>Date:</td>
+                         <%java.text.DateFormat df = new java.text.SimpleDateFormat("dd/MM/yyyy"); %>
+                         <td><input type="text" style="text-align: center" name="date" value=<%= df.format(new java.util.Date()) %> readonly></td>
                     </tr>
-                </table>
-            </center>
-        </form>
-        <br>
-        <form type="hidden" name="submitted" value="yes" action="myorders.jsp" method="post">
-            <center>
-                <%  if (request.getParameter("guestAcc") != null) { %>
-                <b> Guest Account Chosen </b>
-                <table cellpadding="5">
-                    <tr>
-                        <td>Delivery Type:</td>
-                        <td>
-                            <input type="radio" name="deliveryType" value="pickup"> Store Pick-Up: +$0<br>
-                            <input type="radio" name="deliveryType" value="delivery"> Delivery: +$10<br>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Address for Delivery/Pick-Up: </td>
-                        <td>
-                            <input type="text" name="address" placeholder="123 Movie St, Sydney"><br>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>State: </td>
-                        <td>
-                            <input type="text" name="address" placeholder="NSW"><br>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Email:</td>
-                        <td><input type="text" name="email"></td>
-                    </tr>
-                    <tr><td></td>
-                        <td>
-                            <input class="button" type="submit" value="Submit"> 
-                            &nbsp; 
-                            <button class="button" type="button" onclick="location.href = 'home.html'" > Home Page </button>
-                        </td>
-                    </tr>
-                </table>   
-                <%  } else { %>  
-                <b> User Account Chosen </b>
-                <table cellpadding="5">
                     <tr>
                         <td>User ID:</td>
-                        <td><input type="text" name="userID"></td>
+                        <td><input type="text" name="userID" value=<%=userID%> readonly></td>
                     </tr>
+                    <% {/*if (movie != null) {*/ } %>
                     <tr>
-                        <td>Delivery Type:</td>
-                        <td>
-                            <input type="radio" name="deliveryType" value="pickup"> Store Pick-Up: +$0<br>
-                            <input type="radio" name="deliveryType" value="delivery"> Delivery: +$10<br>
-                        </td>
+                        <td>Movie ID:</td>
+                        <td><input type="text" name="movieID" value=<%=movieID%> readonly></td>
                     </tr>
-                    <tr>
-                        <td>Address for Delivery/Pick-Up: </td>
-                        <td>
-                            <input type="text" name="address" placeholder="123 Movie St, Sydney"><br>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>State: </td>
-                        <td><input type="text" name="address" placeholder="NSW"><br></td>
-                    </tr>
-                    <tr>
-                        <td>Email:</td>
-                        <td><input type="text" name="email"></td>
-                    </tr>
+                    <% {/*}*/ } %>
                     <tr><td></td>
                         <td>
                             <input class="button" type="submit" value="Submit"> 
@@ -107,8 +71,8 @@
                         </td>
                     </tr>
                 </table>
-                <%  }%>
             </center>
         </form>
+        <jsp:include page="/ConnServlet" flush="true" />
     </body>
 </html>
