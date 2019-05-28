@@ -37,6 +37,9 @@ public class Order implements Serializable{
         this.orderDeliveryPrice = orderDeliveryPrice;
         this.orderOrigPrice = orderOrigPrice;
         this.orderDiscount = orderDiscount;
+        double discountPercent = 1 - this.orderDiscount/100;
+        this.orderFinalPrice = this.orderOrigPrice * discountPercent;
+        
     }
 
     public int getOrderID() {
@@ -115,5 +118,4 @@ public class Order implements Serializable{
         double discountPercent = 1 - discount/100;
         orderFinalPrice = origPrice * discountPercent;
     }
-    
 }

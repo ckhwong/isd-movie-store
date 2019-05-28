@@ -4,46 +4,111 @@
     Author     : Christopher Wong
 --%>
 
-<%@ page import="wsd.model.*" language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Create Order</title>
-<link href="CSS/zhuce.css" rel="stylesheet" type="text/css">
-</head>
-<body>
-  <div id="container">
-  　 <div id="top">
-      <span id="tit_name">Create Order</span>
-     </div>
-     
-     
-     
-     <div id="createorderbox">
-      <form method="post" action="CreateOrder">
-        <p style="font-size:16px; font-weight:bold">User ID：</p>
-        <input type="text" style="width:350px; height:50px; border:1px solid #CCC" id="userID" name="userID" /><br/>
-        <span style="border:2px solid #CCC; background:#F66; line-height:26px; font-size:14px" id="userNameSpan">Username cannot be empty！</span>
-        
-        <p style="font-size:16px; font-weight:bold">Email：</p>
-        <input type="text" style="width:350px; height:50px; border:1px solid #CCC" id="email" name="email" /><br/>
-        <span style="border:2px solid #CCC; background:#F66; line-height:26px; font-size:14px" id="userNameSpan"></span>
-        
-        <p style="font-size:16px; font-weight:bold">Delivery Type: </p>
-         <select>
-            <option value="pickup">Store Pick-Up: $0</option>
-            <option value="delivery">Home Delivery: +$10</option>   
-         </select> <br/>
-        <span style="border:2px solid #CCC; background:#F66; line-height:26px; font-size:14px" id="userNameSpan">Please enter vaild Phone Number！</span>
-        
-        <p style="font-size:16px; font-weight:bold"></p>    
-        <input type="submit" style="width:150px; height:60px; background:#06F"  value="Sumbit" id="buttontwo" name="buttontwo" /><br/>
-        
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+        <link rel="stylesheet" href="css/demo.css"> 
+        <script type="text/javascript" src="js/script.js"></script>
+        <title>Create Order</title>
+    </head>
+    <body onload="startTime()"  bgcolor="#CC9933" >
+        <div><span class="time" id="time" ></span></div>
+        <center>
+            <h1>Online Movie Store: Create Order</h1> <br>
+            <button class="button" type="button" onclick="location.href = 'home.html'" > Home Page </button><br>
+            <h2>Enter your order details:</h2> 
+        </center>
+        <form>
+            <center>
+                <table cellpadding="5">
+                    <tr>
+                        <td>Account Type:</td>
+                        <td> 
+                            <input class="button" type="submit" value="User" name="userAcc">
+                            &nbsp; 
+                            <input class="button" type="submit" value="Guest" name="guestAcc"><br>
+                        </td>
+                    </tr>
+                </table>
+            </center>
         </form>
-     </div>
-      
-  </div>
-</body>
+        <br>
+        <form type="hidden" name="submitted" value="yes" action="myorders.jsp" method="post">
+            <center>
+                <%  if (request.getParameter("guestAcc") != null) { %>
+                <b> Guest Account Chosen </b>
+                <table cellpadding="5">
+                    <tr>
+                        <td>Delivery Type:</td>
+                        <td>
+                            <input type="radio" name="deliveryType" value="pickup"> Store Pick-Up: +$0<br>
+                            <input type="radio" name="deliveryType" value="delivery"> Delivery: +$10<br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Address for Delivery/Pick-Up: </td>
+                        <td>
+                            <input type="text" name="address" placeholder="123 Movie St, Sydney"><br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>State: </td>
+                        <td>
+                            <input type="text" name="address" placeholder="NSW"><br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Email:</td>
+                        <td><input type="text" name="email"></td>
+                    </tr>
+                    <tr><td></td>
+                        <td>
+                            <input class="button" type="submit" value="Submit"> 
+                            &nbsp; 
+                            <button class="button" type="button" onclick="location.href = 'home.html'" > Home Page </button>
+                        </td>
+                    </tr>
+                </table>   
+                <%  } else { %>  
+                <b> User Account Chosen </b>
+                <table cellpadding="5">
+                    <tr>
+                        <td>User ID:</td>
+                        <td><input type="text" name="userID"></td>
+                    </tr>
+                    <tr>
+                        <td>Delivery Type:</td>
+                        <td>
+                            <input type="radio" name="deliveryType" value="pickup"> Store Pick-Up: +$0<br>
+                            <input type="radio" name="deliveryType" value="delivery"> Delivery: +$10<br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Address for Delivery/Pick-Up: </td>
+                        <td>
+                            <input type="text" name="address" placeholder="123 Movie St, Sydney"><br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>State: </td>
+                        <td><input type="text" name="address" placeholder="NSW"><br></td>
+                    </tr>
+                    <tr>
+                        <td>Email:</td>
+                        <td><input type="text" name="email"></td>
+                    </tr>
+                    <tr><td></td>
+                        <td>
+                            <input class="button" type="submit" value="Submit"> 
+                            &nbsp; 
+                            <button class="button" type="button" onclick="location.href = 'home.html'" > Home Page </button>
+                        </td>
+                    </tr>
+                </table>
+                <%  }%>
+            </center>
+        </form>
+    </body>
 </html>

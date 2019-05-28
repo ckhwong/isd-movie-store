@@ -34,13 +34,15 @@ public class DBOrderManager {
          if(hasOrder){
          
              int oID = Integer.parseInt(rs.getString("orderID"));
-             int uID = Integer.parseInt(rs.getString("userID")); 
-             int mID = Integer.parseInt(rs.getString("movieID"));
              String date = rs.getString("date");
+             int mID = Integer.parseInt(rs.getString("movieID"));
              String deliveryType = rs.getString("deliveryType");
              double deliveryPrice = Double.parseDouble(rs.getString("deliveryPrice"));
+             int uID = Integer.parseInt(rs.getString("userID")); 
              double origPrice = Double.parseDouble(rs.getString("origPrice")); 
              int discount = Integer.parseInt(rs.getString("discount"));
+             
+             
                           
              orderFromDB = new Order (oID, uID, mID, date, deliveryType, 
                 deliveryPrice, origPrice, discount);

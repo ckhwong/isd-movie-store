@@ -1,7 +1,7 @@
 <%-- 
     Document   : myorders - shows list of order history
-    Created on : 25/05/2019, 5:17:27 PM
-    Author     : ckhwong008
+    Created on : 21/05/2019, 5:17:27 PM
+    Author     : Christopher Wong
 --%>
 
 <%@page import="wsd.model.*" contentType="text/html" pageEncoding="UTF-8"%>
@@ -11,7 +11,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="css/demo.css"> 
         <script type="text/javascript" src="js/script.js"></script>
-        <title>Main Page</title>
+        <title>My Orders</title>
     </head>
     <%
         String log;
