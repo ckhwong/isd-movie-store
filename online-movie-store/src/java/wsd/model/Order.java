@@ -13,30 +13,21 @@ import java.io.Serializable;
 public class Order implements Serializable{
 
     private int orderID;
+    private String date;
     private int userID;
     private int movieID;
-    private String orderDate;
-    private String orderDeliveryType;
-    private double orderDeliveryPrice;
-    private double orderOrigPrice;
-    private int orderDiscount;
-    private double orderFinalPrice;
+    private String status;
     
     public Order() {
         super();
     }
 
-    public Order(int orderID, int userID, int movieID, String orderDate,
-            String orderDeliveryType, double orderDeliveryPrice, 
-            double orderOrigPrice, int orderDiscount) {
+    public Order(int orderID, String date, int userID, int movieID, String status) {
         this.orderID = orderID;
+        this.date = date;
         this.userID = userID;
         this.movieID = movieID;
-        this.orderDate = orderDate;
-        this.orderDeliveryType = orderDeliveryType;
-        this.orderDeliveryPrice = orderDeliveryPrice;
-        this.orderOrigPrice = orderOrigPrice;
-        this.orderDiscount = orderDiscount;
+        this.status = status;
     }
 
     public int getOrderID() {
@@ -45,6 +36,14 @@ public class Order implements Serializable{
 
     public void setOrderID(int orderID) {
         this.orderID = orderID;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public int getUserID() {
@@ -63,57 +62,11 @@ public class Order implements Serializable{
         this.movieID = movieID;
     }
 
-    public String getOrderDate() {
-        return orderDate;
+    public String getStatus() {
+        return status;
     }
 
-    public void setOrderDate(String orderDate) {
-        this.orderDate = orderDate;
+    public void setStatus(String status) {
+        this.status = status;
     }
-
-        public String getOrderDeliveryType() {
-        return orderDeliveryType;
-    }
-
-    public void setOrderDeliveryType(String orderDeliveryType) {
-        this.orderDeliveryType = orderDeliveryType;
-    }
-    
-    public double getOrderDeliveryPrice() {
-        return orderDeliveryPrice;
-    }
-
-    public void setOrderDeliveryPrice(double orderDeliveryPrice) {
-        this.orderDeliveryPrice = orderDeliveryPrice;
-    }
-
-    
-    public double getOrderOrigPrice() {
-        return orderOrigPrice;
-    }
-
-    public void setOrderOrigPrice(double orderOrigPrice) {
-        this.orderOrigPrice = orderOrigPrice;
-    }
-
-    public int getOrderDiscount() {
-        return orderDiscount;
-    }
-
-    public void setOrderDiscount(int orderDiscount) {
-        this.orderDiscount = orderDiscount;
-    }
-
-    public double getOrderFinalPrice() {
-        calcFinalPrice();
-        return orderFinalPrice;
-    }
-    
-    public void calcFinalPrice() {
-        double origPrice = getOrderOrigPrice();
-        int discount = getOrderDiscount();
-        double discountPercent = 1 - discount/100;
-        orderFinalPrice = origPrice * discountPercent;
-    }
-    
 }

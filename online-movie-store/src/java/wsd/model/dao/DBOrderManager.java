@@ -34,16 +34,12 @@ public class DBOrderManager {
          if(hasOrder){
          
              int oID = Integer.parseInt(rs.getString("orderID"));
-             int uID = Integer.parseInt(rs.getString("userID")); 
-             int mID = Integer.parseInt(rs.getString("movieID"));
              String date = rs.getString("date");
-             String deliveryType = rs.getString("deliveryType");
-             double deliveryPrice = Double.parseDouble(rs.getString("deliveryPrice"));
-             double origPrice = Double.parseDouble(rs.getString("origPrice")); 
-             int discount = Integer.parseInt(rs.getString("discount"));
-                          
-             orderFromDB = new Order (oID, uID, mID, date, deliveryType, 
-                deliveryPrice, origPrice, discount);
+             int uID = Integer.parseInt(rs.getString("userID"));
+             int mID = Integer.parseInt(rs.getString("movieID"));
+             String status = rs.getString("status");
+               
+             orderFromDB = new Order (oID, date, uID, mID, status);
          }
         
          rs.close();
@@ -52,26 +48,20 @@ public class DBOrderManager {
          return orderFromDB;
     }
 
-    //Check if a movie exists in the database
-    public boolean checkOrder(int orderID, int userID) throws SQLException {
-       //setup the select sql query string
-        //execute this query using the statement field
-        //add the results to a ResultSet
-        //search the ResultSet for a student using the parameters
-        //verify if the movie exists
-        return false;
-    }
-
-    //Add a student-data into the database
-    public void addOrder(int orderID, int userID, int movieID, String date, 
-            String deliveryType, double deliveryPrice,
-            double origPrice, int discount) throws SQLException {        
+    //Add a submitted order into the database
+    public void addOrder(int orderID, String date, int userID, int movieID,  
+            String status) throws SQLException {        
         //code for add-operation
         
-        String createQueryString = "insert into Orders" 
-                + " values ('" + orderID + "', '" + userID + "', '" + movieID + "', '" 
-                + date + "', '" + deliveryType + "', '" + deliveryPrice + "', '" 
-                + origPrice + "', '" + discount + "')";
+        String createQueryString = "INSERT INTO orders VALUES (" + orderID 
+                + ", (SELECT movieid FROM movies WHERE movies.movieid=" 
+                + movieID + "), (select userid from users where users.userid=" 
+                + userID + "), '" + status + "', '" + date + "')";
+        
+        //insert into Orders values (orderid, 
+        //(SELECT movieid from movies WHERE movies.movieid=movieid), 
+        //(SELECT userid from users WHERE users.userid=userid), 
+        //'status', 'date');
          boolean orderCreated = st.executeUpdate(createQueryString) > 0;
          
          if (orderCreated){
@@ -82,7 +72,7 @@ public class DBOrderManager {
          }
     }
 
-    //update a student details in the database
+    //update order details in the database
     public void updateOrder(int orderID, String deliveryType, 
             int discount) throws SQLException {
         //code for update-operation
@@ -99,18 +89,19 @@ public class DBOrderManager {
          }
     }
     
-    //delete a student from the database
-    public void deleteOrder(int orderID) throws SQLException{
+    //change status of order to cancelled from the database
+    public void cancelOrder(int orderID, String status) throws SQLException{
         //code for delete-operation
         
-        String deleteQueryString = "delete from Orders where orderID= '" + orderID + "' ";
-        boolean orderDeleted = st.executeUpdate(deleteQueryString) > 0;
+        String updateQueryString = "update Orders set status= '" 
+                + status + "' where orderID= '" + orderID + "' ";
+        boolean orderCancelled = st.executeUpdate(updateQueryString) > 0;
          
-         if (orderDeleted){
-         System.out.println("order deleted");
+         if (orderCancelled){
+         System.out.println("order cancelled");
          }
          else {
-         System.out.println("order not deleted");
+         System.out.println("order not cancelled");
          }
     }
 }
