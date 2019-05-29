@@ -4,6 +4,7 @@
     Author     : William Palmer
 --%>
 
+<%@page import="wsd.model.dao.DBLogManager"%>
 <%@page import="wsd.model.*" contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -16,8 +17,8 @@
     <%
         String log = (String) session.getAttribute("userID");
         
-        String forcedUserID; // Used by admins for enforcing a particular user ID to be searched
-        String checkDate; // The date used to get logs
+        String forcedUserID = "000001"; // Used by admins for enforcing a particular user ID to be searched
+        String checkDate = "29/05/2019"; // The date used to get logs
         Log[] logsToDisplay = new Log[0];
         
         
@@ -37,8 +38,8 @@
         <p>
             <form name="Get Log" method="POST">
                 <pre>
-                    forcedUserID : <input type="text" name="Enter User ID">
-                    checkDate : <input type="text" name="dd/MM/yyyy">
+                    <%=forcedUserID%> : <input type="text" name="Enter User ID">
+                    <%=checkDate%> : <input type="text" name="dd/MM/yyyy">
                     <input type="submit" name="Search">
                 </pre>
             </form>
@@ -69,6 +70,11 @@
             </tbody>
         </table>
 
-        
+        <%
+            DBLogManager manager = (DBLogManager) session.getAttribute("manager");
+            Log log = new Log();
+            manager.addOrder(orderID, date, userID, movieID, status);
+            session.setAttribute("order", order);
+        %>
     </body>
 </html>

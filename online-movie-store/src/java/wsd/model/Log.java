@@ -17,56 +17,53 @@ public class Log implements Serializable {
     // private variables
     private int logID;
     private int userID;
-    private Date initialDate;
-    private Date finalDate;
+    private String initialDate;
+    private String finalDate;
     
     // constructors
     public Log() {
         super();
     }
-    
-    public Log(int logID, int userID, Date initialDate, Date finalDate) {
+
+    public Log(int logID, int userID, String initialDate, String finalDate) {
         this.logID = logID;
         this.userID = userID;
         this.initialDate = initialDate;
         this.finalDate = finalDate;
     }
-    
-    // public methods
-    
-    // getters/setters
+
     public int getLogID() {
         return logID;
     }
-    
+
     public void setLogID(int logID) {
         this.logID = logID;
     }
-    
+
     public int getUserID() {
         return userID;
     }
-    
+
     public void setUserID(int userID) {
         this.userID = userID;
     }
-    
-    public Date getInitialDate() {
+
+    public String getInitialDate() {
         return initialDate;
     }
-    
-    public void setInitialDate(Date initialDate) {
+
+    public void setInitialDate(String initialDate) {
         this.initialDate = initialDate;
     }
-    
-    public Date getFinalDate() {
+
+    public String getFinalDate() {
         return finalDate;
     }
-    
-    public void setFinalDate(Date finalDate) {
+
+    public void setFinalDate(String finalDate) {
         this.finalDate = finalDate;
     }
-    
+      
     // misc. convenience methods
     
     // Get the initial date as a String that shows only the date
