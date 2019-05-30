@@ -73,19 +73,17 @@ public class DBOrderManager {
     }
 
     //update order details in the database
-    public void updateOrder(int orderID, String deliveryType, 
-            int discount) throws SQLException {
+    public void showOrder(int userID) throws SQLException {
         //code for update-operation
          
-        String updateQueryString = "update Orders set deliveryType = '" + deliveryType 
-                + "', discount= '" + discount + "' where orderID='" + orderID + "'";
+        String updateQueryString = "SELECT * FROM APP.MOVIES FETCH FIRST 100 ROWS ONLY";
         boolean orderUpdated = st.executeUpdate(updateQueryString) > 0;
          
          if (orderUpdated){
-         System.out.println("order updated");
+         System.out.println("order list shown");
          }
          else {
-         System.out.println("order not updated");
+         System.out.println("order list not shown");
          }
     }
     
