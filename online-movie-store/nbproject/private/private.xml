@@ -3,23 +3,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/ckhwong008/Documents/GitHub/isd-movie-store/online-movie-store/web/ordersubmitted.jsp</file>
-            <file>file:/C:/Users/ckhwong008/Documents/GitHub/isd-movie-store/online-movie-store/web/shipmentsbmitted.jsp</file>
-            <file>file:/C:/Users/ckhwong008/Documents/GitHub/isd-movie-store/online-movie-store/web/myorders.jsp</file>
-            <file>file:/C:/Users/ckhwong008/Documents/GitHub/isd-movie-store/online-movie-store/web/createshipment.jsp</file>
-            <file>file:/C:/Users/ckhwong008/Documents/GitHub/isd-movie-store/online-movie-store/web/shipments.jsp</file>
-            <file>file:/C:/Users/ckhwong008/Documents/GitHub/isd-movie-store/online-movie-store/web/createorder.jsp</file>
-            <file>file:/C:/Users/ckhwong008/Documents/GitHub/isd-movie-store/online-movie-store/src/java/wsd/model/dao/DBConnector.java</file>
-            <file>file:/C:/Users/ckhwong008/Documents/GitHub/isd-movie-store/online-movie-store/web/shipmentupdated.jsp</file>
-            <file>file:/C:/Users/ckhwong008/Documents/GitHub/isd-movie-store/online-movie-store/src/java/wsd/model/dao/DBLogManager.java</file>
-            <file>file:/C:/Users/ckhwong008/Documents/GitHub/isd-movie-store/online-movie-store/src/java/wsd/model/Shipment.java</file>
-            <file>file:/C:/Users/ckhwong008/Documents/GitHub/isd-movie-store/online-movie-store/web/shipmentdelete.jsp</file>
-            <file>file:/C:/Users/ckhwong008/Documents/GitHub/isd-movie-store/online-movie-store/src/java/wsd/model/dao/DBOrderManager.java</file>
-            <file>file:/C:/Users/ckhwong008/Documents/GitHub/isd-movie-store/online-movie-store/src/java/wsd/controller/ShipmentConnServlet.java</file>
-            <file>file:/C:/Users/ckhwong008/Documents/GitHub/isd-movie-store/online-movie-store/src/java/wsd/model/Order.java</file>
-            <file>file:/C:/Users/ckhwong008/Documents/GitHub/isd-movie-store/online-movie-store/src/java/wsd/controller/ConnServlet.java</file>
-            <file>file:/C:/Users/ckhwong008/Documents/GitHub/isd-movie-store/online-movie-store/src/java/wsd/model/dao/DBShipmentManager.java</file>
-            <file>file:/C:/Users/ckhwong008/Documents/GitHub/isd-movie-store/online-movie-store/web/editshipment.jsp</file>
+            <file>file:/D:/Other%20Developments/GitHub%20Repository/isd-movie-store/online-movie-store/web/logpage.jsp</file>
+            <file>file:/D:/Other%20Developments/GitHub%20Repository/isd-movie-store/online-movie-store/web/createorder.jsp</file>
+            <file>file:/D:/Other%20Developments/GitHub%20Repository/isd-movie-store/online-movie-store/src/java/wsd/model/dao/DBLogManager.java</file>
+            <file>file:/D:/Other%20Developments/GitHub%20Repository/isd-movie-store/online-movie-store/src/java/wsd/controller/ConnServlet.java</file>
+            <file>file:/D:/Other%20Developments/GitHub%20Repository/isd-movie-store/online-movie-store/web/login.html</file>
+            <file>file:/D:/Other%20Developments/GitHub%20Repository/isd-movie-store/online-movie-store/src/java/wsd/model/Log.java</file>
+            <file>file:/D:/Other%20Developments/GitHub%20Repository/isd-movie-store/online-movie-store/web/ordersubmitted.jsp</file>
+            <file>file:/D:/Other%20Developments/GitHub%20Repository/isd-movie-store/online-movie-store/src/java/wsd/controller/LogConnServlet.java</file>
         </group>
     </open-files>
 </project-private>
