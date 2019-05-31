@@ -48,7 +48,7 @@ tr:nth-child(even) {
         <div><span class="time" id="time" ></span></div>
         <center>
             <h1>Online Movie Store: All Shipments</h1> <br>
-            <button class="button" type="button" onclick="location.href = 'home.html'" > Home Page </button><br>
+            <button class="button" type="button" onclick="location.href = 'home.jsp'" > Home Page </button><br>
         </center>
         
         

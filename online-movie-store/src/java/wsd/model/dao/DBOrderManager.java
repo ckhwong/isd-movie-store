@@ -8,7 +8,7 @@ package wsd.model.dao;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import wsd.model.Order;
+import wsd.model.*;
 
 /**
  *
@@ -112,5 +112,6 @@ public class DBOrderManager {
          System.out.println("order not cancelled");
          }
     }
+    
 }
 

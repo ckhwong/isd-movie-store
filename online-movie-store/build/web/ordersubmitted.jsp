@@ -77,6 +77,7 @@
         </table>
         <%
             //Activate the database add-function once DBManager functions are completed
+            DBConnector conn = 
             DBOrderManager manager = (DBOrderManager) session.getAttribute("manager");
             Order order = new Order(orderID, date, userID, movieID, status);
             manager.addOrder(orderID, date, userID, movieID, status);
