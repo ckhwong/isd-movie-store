@@ -1,1 +1,3 @@
 /interface copy/dist/
+*.xml
+*.properties
