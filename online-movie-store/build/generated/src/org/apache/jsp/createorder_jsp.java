@@ -64,76 +64,90 @@ public final class createorder_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("    </head>\r\n");
       out.write("    ");
 
-        //String log;
-        // User user = (User) session.getAttribute("user");
-        //DBOrderManager manager = (DBOrderManager)session.getAttribute("manager");
-        String userID = "55550000";
-        /* if (user != null) {
+        //DBMovieManager manager = (DBMovieManager)session.getAttribute("manager");
+        String movieID = request.getParameter("order");
+        String log = "";
+        int guestID = 9999999;
+
+        DBConnector connector = new DBConnector();
+        Connection conn = connector.openConnection();
+        DBOrderManager manager = (DBOrderManager) session.getAttribute("manager");
+
+        User user = (User) session.getAttribute("userLogin");
+
+        if (user != null) {
             log = " &lt " + user.getName() + " &gt";
+            guestID = user.getID();
         } else {
             log = " &lt " + "Guest User" + " &gt";
-        }*/
+        }
 
-        // Movie movie = (movie) session.getAttribute("movie"); 
-        String movieID = "4448444";
-    
+
+
       out.write("\r\n");
       out.write("    <body onload=\"startTime()\"  bgcolor=\"#CC9933\" >\r\n");
       out.write("        <div><span class=\"time\" id=\"time\" ></span></div>\r\n");
       out.write("        <center>\r\n");
       out.write("            <h1>Online Movie Store: Create Order</h1> <br>\r\n");
-      out.write("            <button class=\"button\" type=\"button\" onclick=\"location.href = 'home.html'\" > Home Page </button><br>\r\n");
+      out.write("            <button class=\"button\" type=\"button\" onclick=\"location.href = 'home.jsp'\" > Home Page </button>\r\n");
+      out.write("            <button class=\"button\" type=\"button\" onclick=\"location.href = 'movies.jsp'\" > Movies </button>\r\n");
+      out.write("            <button class=\"button\" type=\"button\" onclick=\"location.href = 'profile.jsp'\" > Account </button><br>\r\n");
       out.write("            <h2>Check order details:</h2> \r\n");
       out.write("        </center>\r\n");
+      out.write("        <\r\n");
       out.write("        <form action=\"ordersubmitted.jsp\" method=\"post\">\r\n");
       out.write("            <center>\r\n");
-      out.write("                ");
- {/*if (user != null) {
-                        if (user.getID() != 99999999){ */
-                } 
-      out.write(" \r\n");
-      out.write("                ");
- {/* //fill table here */} 
-      out.write(" \r\n");
-      out.write("                ");
- {/*} else { */} 
-      out.write(" \r\n");
       out.write("                <table cellpadding=\"5\" >\r\n");
-      out.write("                    ");
- {/*if (movie != null) {*/ } 
-      out.write("\r\n");
       out.write("                    <tr>\r\n");
       out.write("                        <td>Date:</td>\r\n");
-      out.write("                         ");
-java.text.DateFormat df = new java.text.SimpleDateFormat("dd/MM/yyyy"); 
+      out.write("                        ");
+java.text.DateFormat df = new java.text.SimpleDateFormat("dd/MM/yyyy");
       out.write("\r\n");
-      out.write("                         <td><input type=\"text\" style=\"text-align: center\" name=\"date\" value=");
-      out.print( df.format(new java.util.Date()) );
+      out.write("                        <td><input type=\"text\" style=\"text-align: center\" name=\"date\" value=");
+      out.print( df.format(new java.util.Date()));
       out.write(" readonly></td>\r\n");
       out.write("                    </tr>\r\n");
       out.write("                    <tr>\r\n");
-      out.write("                        <td>User ID:</td>\r\n");
-      out.write("                        <td><input type=\"text\" name=\"userID\" value=");
-      out.print(userID);
-      out.write(" readonly></td>\r\n");
-      out.write("                    </tr>\r\n");
-      out.write("                    ");
- {/*if (movie != null) {*/ } 
+      out.write("                        <td>");
+ if (user != null) {
+      out.write(" \r\n");
+      out.write("                            User ID:\r\n");
+      out.write("                            ");
+ } else {
       out.write("\r\n");
+      out.write("                            Guest ID:\r\n");
+      out.write("                            ");
+ }
+      out.write("</td>\r\n");
+      out.write("                        <td>\r\n");
+      out.write("                            ");
+ if (user != null) {
+      out.write("\r\n");
+      out.write("                            <input type=\"text\" name=\"userID\" value=\"");
+      out.print(user.getID() );
+      out.write("\" readonly>\r\n");
+      out.write("                            ");
+ } else {
+      out.write("\r\n");
+      out.write("                            <input type=\"text\" name=\"userID\" value=\"");
+      out.print(guestID);
+      out.write("\"  readonly>\r\n");
+      out.write("                            ");
+ }
+      out.write("\r\n");
+      out.write("                        </td>\r\n");
+      out.write("                    </tr>\r\n");
       out.write("                    <tr>\r\n");
       out.write("                        <td>Movie ID:</td>\r\n");
       out.write("                        <td><input type=\"text\" name=\"movieID\" value=");
       out.print(movieID);
       out.write(" readonly></td>\r\n");
       out.write("                    </tr>\r\n");
-      out.write("                    ");
- {/*}*/ } 
-      out.write("\r\n");
       out.write("                    <tr><td></td>\r\n");
       out.write("                        <td>\r\n");
       out.write("                            <input class=\"button\" type=\"submit\" value=\"Submit\"> \r\n");
       out.write("                            &nbsp; \r\n");
-      out.write("                            <button class=\"button\" type=\"button\" onclick=\"location.href = 'home.html'\" > Home Page </button>\r\n");
+      out.write("                            <button class=\"button\" type=\"button\" onclick=\"location.href = 'movies.jsp'\" > Back </button>\r\n");
       out.write("                        </td>\r\n");
       out.write("                    </tr>\r\n");
       out.write("                </table>\r\n");

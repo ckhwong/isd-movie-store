@@ -26,7 +26,7 @@
             
            
                 session.setAttribute("userLogin", user);
-                response.sendRedirect("profile.jsp");                        
+                response.sendRedirect("loginWelcome.jsp");                        
            
             
         %>

@@ -27,34 +27,43 @@
         int orderID = new Random().nextInt(999999999);
         String status = "Approved";
 
-        //String log;
-        /* User user = (User) session.getAttribute("user");
+        String log;
+        User user = (User) session.getAttribute("user");
 
         if (user != null) {
             log = " &lt " + user.getName() + " &gt";
         } else {
             log = " &lt " + "Guest User" + " &gt";
-        }*/
+        }
     %>
     <body onload="startTime()">
         <div><span class="time" id="time" ></span></div>
-        <h2 class="outline">Order History</h2> 
+        
+        <center>
+            <h1>Online Movie Store: Registered Order</h1> <br>
+            <button class="button" type="button" onclick="location.href = 'home.jsp'" > Home Page </button>
+            <button class="button" type="button" onclick="location.href = 'movies.jsp'" > Movies </button><br>       
+            <h2>Check order details:</h2> 
+        </center>
+        <h2 class="outline">Your Order</h2> <br>
         <table width="100%" >
             <tr bgcolor="lightgrey" ><td align="right" class="outline">You are logged in as Guest Account</td></tr>
             <tr><td align="right">
                     <%if (userID == 9999999) { %>
-                    <u><a class="link" href="home.html">Register</a></u> 
+                    <u><a class="link" href="register.jsp">Register</a></u> 
                         <%} else { %>
-                    <u><a class="link" href="login.html">Account</a></u>
+                    <u><a class="link" href="profile.jsp">Account</a></u>
+                    &emsp;
+                    <u><a class="link" href="logout.jsp">Logout</a></u>
                         <%}%>
-                    &emsp;<u><a class="link" href="logout.jsp">Logout</a></u>
+                    
                 </td>
             </tr>                  
         </table>        
         <hr>
         <% if (userID == 9999999) { %>
         <b>Guest Account</b><br>
-        Your finalised order details:
+        <p>Your finalised order details:</p><br>
         <table class="userAcc">
             <thead class="h">
                 <tr>
@@ -77,15 +86,16 @@
         </table>
         <%
             //Activate the database add-function once DBManager functions are completed
-            DBConnector conn = 
+            DBConnector connector  = new DBConnector();
+            Connection conn = connector.openConnection();
             DBOrderManager manager = (DBOrderManager) session.getAttribute("manager");
             Order order = new Order(orderID, date, userID, movieID, status);
             manager.addOrder(orderID, date, userID, movieID, status);
             session.setAttribute("order", order);
         %>
         <% } else if (request.getParameter("userID") != null) { %>
-        <b>Thank You <%{/*user */} %></b><br>
-        Your finalised order details:
+        <b>Thank You <%=user.getName()%></b><br>
+        <p>Your finalised order details:</p><br>
         <table class="userAcc">
             <thead class="h">
                 <tr>
@@ -108,15 +118,20 @@
         </table>
         <%
             //Activate the database add-function once DBManager functions are completed
+            DBConnector connector  = new DBConnector();
+            Connection conn = connector.openConnection();
             DBOrderManager manager = (DBOrderManager) session.getAttribute("manager");
             Order order = new Order(orderID, date, userID, movieID, status);
             System.out.println("" + orderID + " " + date + " " + userID + " " + movieID + " " + status);
             manager.addOrder(orderID, date, userID, movieID, status);
             session.setAttribute("order", order);
+            
         %>
+        <button class="button" type="button" onclick="location.href = 'myorders.jsp'" > My Orders </button><br>
         <%} else { %>
         <p class="outline">Some error occurred</p>
         <%}%>
+        
     </body>
     <jsp:include page="/ConnServlet" flush="true" />
 </html>

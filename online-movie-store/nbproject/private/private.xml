@@ -4,21 +4,14 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/ckhwong008/Documents/GitHub/isd-movie-store/online-movie-store/web/ordersubmitted.jsp</file>
-            <file>file:/C:/Users/ckhwong008/Documents/GitHub/isd-movie-store/online-movie-store/web/delete.jsp</file>
-            <file>file:/C:/Users/ckhwong008/Documents/GitHub/isd-movie-store/online-movie-store/web/profile.jsp</file>
-            <file>file:/C:/Users/ckhwong008/Documents/GitHub/isd-movie-store/online-movie-store/web/deleteSuccess.jsp</file>
-            <file>file:/C:/Users/ckhwong008/Documents/GitHub/isd-movie-store/online-movie-store/web/deleteSure.jsp</file>
+            <file>file:/C:/Users/ckhwong008/Documents/GitHub/isd-movie-store/online-movie-store/src/java/wsd/model/dao/DBOrderManager.java</file>
+            <file>file:/C:/Users/ckhwong008/Documents/GitHub/isd-movie-store/online-movie-store/web/editorder.jsp</file>
+            <file>file:/C:/Users/ckhwong008/Documents/GitHub/isd-movie-store/online-movie-store/web/myorders.jsp</file>
             <file>file:/C:/Users/ckhwong008/Documents/GitHub/isd-movie-store/online-movie-store/web/shipments.jsp</file>
             <file>file:/C:/Users/ckhwong008/Documents/GitHub/isd-movie-store/online-movie-store/web/createorder.jsp</file>
-            <file>file:/C:/Users/ckhwong008/Documents/GitHub/isd-movie-store/online-movie-store/web/home.jsp</file>
-            <file>file:/C:/Users/ckhwong008/Documents/GitHub/isd-movie-store/online-movie-store/web/register.jsp</file>
-            <file>file:/C:/Users/ckhwong008/Documents/GitHub/isd-movie-store/online-movie-store/web/registerSuccess.jsp</file>
-            <file>file:/C:/Users/ckhwong008/Documents/GitHub/isd-movie-store/online-movie-store/web/logout.jsp</file>
-            <file>file:/C:/Users/ckhwong008/Documents/GitHub/isd-movie-store/online-movie-store/src/java/wsd/model/dao/DBUserManager.java</file>
-            <file>file:/C:/Users/ckhwong008/Documents/GitHub/isd-movie-store/online-movie-store/web/loginSuceess.jsp</file>
-            <file>file:/C:/Users/ckhwong008/Documents/GitHub/isd-movie-store/online-movie-store/src/java/wsd/model/dao/DBOrderManager.java</file>
-            <file>file:/C:/Users/ckhwong008/Documents/GitHub/isd-movie-store/online-movie-store/src/java/wsd/model/User.java</file>
+            <file>file:/C:/Users/ckhwong008/Documents/GitHub/isd-movie-store/online-movie-store/src/java/wsd/model/Order.java</file>
             <file>file:/C:/Users/ckhwong008/Documents/GitHub/isd-movie-store/online-movie-store/src/java/wsd/model/dao/DBShipmentManager.java</file>
+            <file>file:/C:/Users/ckhwong008/Documents/GitHub/isd-movie-store/online-movie-store/web/register.jsp</file>
             <file>file:/C:/Users/ckhwong008/Documents/GitHub/isd-movie-store/online-movie-store/web/movies.jsp</file>
         </group>
     </open-files>

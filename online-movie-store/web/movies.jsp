@@ -13,7 +13,6 @@
 <%
     DBMovieManager manager = new DBMovieManager();
     List<Movie> movies = manager.getAllMovies();
-    
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -44,11 +43,12 @@ tr:nth-child(even) {
     <body  bgcolor="#CC9933" >
         <div><span class="time" id="time" ></span></div>
         <center>
-            <h1>Online Movie Store: All Shipments</h1> <br>
+            <h1>Online Movie Store</h1> <br>
             <button class="button" type="button" onclick="location.href = 'home.jsp'" > Home Page </button><br>
         </center>       
         
         <hr>
+        <b><p>To order movie, click on its ID:</p></b>
         <table  width="100%" >
             <tr>
                 <th>Movie ID</th>
@@ -57,24 +57,22 @@ tr:nth-child(even) {
                 <th>Genre</th>
                 <th>Price</th>
                 <th>Stock</th>
-                <th>Action</th>
             </tr>
             <% for(Movie movie: movies) { %>
                 <tr>
-                    <td><%= movie.getMovieID() %></td>
+                  <form action="createorder.jsp" method="post">
+                      <td><input class="button" type="submit" name="order" value=<%=movie.getMovieID()%>></td>
+                    </form>
                     <td><%= movie.getTitle() %></td>
                     <td><%= movie.getDuration() %></td>
                     <td><%= movie.getGenre() %></td>
                     <td><%= movie.getPrice() %></td>
                     <td><%= movie.getStock() %></td>
-                    <td><input class="button" type="submit" name=<%=movie.getMovieID()%> value="Order"></td>
-                </tr>
-            
+                </tr>            
             <% } %>
         </table>
         
         <br>
-        <a href="createshipment.jsp">Create new shipment</a>
         <jsp:include page="/ConnServlet" flush="true" />
     </body>
 </html>

@@ -21,35 +21,6 @@ public class DBOrderManager {
         st = conn.createStatement();
     }
 
-    //Find order by ID in the database
-    public Order findOrder(int orderID) throws SQLException {
-        //setup the select sql query string
-        String searchQueryString = "select * from Orders where Order ID='" 
-                + orderID + "'";
-        //execute this query using the statement field
-       //add the results to a ResultSet
-         ResultSet rs = st.executeQuery(searchQueryString);
-        //search the ResultSet for a student using the parameters
-         boolean hasOrder = rs.next();
-         Order orderFromDB = null;
-                 
-         if(hasOrder){
-         
-             int oID = rs.getInt("orderID");
-             String date = rs.getString("date");
-             int uID = rs.getInt("userID");
-             int mID = rs.getInt("movieID");
-             String status = rs.getString("status");
-               
-             orderFromDB = new Order (oID, date, uID, mID, status);
-         }
-        
-         rs.close();
-        // st.close();
-         
-         return orderFromDB;
-    }
-
     //Add a submitted order into the database
     public void addOrder(int orderID, String date, int userID, int movieID,  
             String status) throws SQLException {        
@@ -74,27 +45,26 @@ public class DBOrderManager {
          }
     }
 
-    //update order details in the database
-    public List<Order> showOrder(int userID) throws SQLException {
-        //code for update-operation
-         
-        String updateQueryString = "SELECT * FROM ORDERS FETCH FIRST 100 ROWS ONLY";
-        ResultSet rs = st.executeQuery(updateQueryString);
-        //search the ResultSet for an order using the parameters
-        boolean hasOrder = rs.next();
-         
-        List<Order> list = new ArrayList<>();
-        if (hasOrder) {
-            System.out.println("hasOrder");
-            //while(hasOrder){
-                list.add(new Order(rs.getInt("orderid"), rs.getString("date"),
-                        rs.getInt("userid"), rs.getInt("movieid"), rs.getString("status")));
-            //}
-         }
-        else  {
-            System.out.println("No orders found");
+    //Find Order(s) by ID in the database
+    public List<Order> getOrders(int userID) {
+        List<Order> orders = new ArrayList<>();
+        String sql =  "select * from orders where userID="
+                + userID;
+
+        try {
+            ResultSet rs = st.executeQuery(sql);
+            while (rs.next()) {
+                int orderID = rs.getInt("orderID");
+                String date = rs.getString("date");
+                int movieID = rs.getInt("movieID");
+                String status = rs.getString("status");
+                Order order = new Order(orderID, date, userID, movieID, status);
+                orders.add(order);
+            }
+        } catch (SQLException e) {
+            System.err.print(e);
         }
-        return list;
+        return orders;
     }
     
     //change status of order to cancelled from the database
