@@ -1,0 +1,717 @@
+From a51ce7acbbe675dc87ef3d140b77f0e213daa727 Mon Sep 17 00:00:00 2001
+From: Yi chen <12792040@student.uts.edu.au>
+Date: Wed, 29 May 2019 22:30:34 -0700
+Subject: [PATCH] add Shipment part
+
+---
+ .gitignore                                    |   5 +-
+ online-movie-store/build/web/home.html        |   3 +
+ .../java/wsd/controller/LogConnServlet.java   |   3 +
+ .../src/java/wsd/model/Shipment.java          |  74 +++++++++
+ .../src/java/wsd/model/dao/DB.java            |  16 --
+ .../java/wsd/model/dao/DBShipmentManager.java | 149 ++++++++++++++++++
+ online-movie-store/web/createshipment.jsp     |  84 ++++++++++
+ online-movie-store/web/editshipment.jsp       |  72 +++++++++
+ online-movie-store/web/home.html              |   3 +
+ online-movie-store/web/shipmentdelete.jsp     |  21 +++
+ online-movie-store/web/shipments.jsp          |  94 +++++++++++
+ online-movie-store/web/shipmentsubmitted.jsp  |  27 ++++
+ online-movie-store/web/shipmentupdated.jsp    |  27 ++++
+ 13 files changed, 561 insertions(+), 17 deletions(-)
+ create mode 100644 online-movie-store/src/java/wsd/model/Shipment.java
+ delete mode 100644 online-movie-store/src/java/wsd/model/dao/DB.java
+ create mode 100644 online-movie-store/src/java/wsd/model/dao/DBShipmentManager.java
+ create mode 100644 online-movie-store/web/createshipment.jsp
+ create mode 100644 online-movie-store/web/editshipment.jsp
+ create mode 100644 online-movie-store/web/shipmentdelete.jsp
+ create mode 100644 online-movie-store/web/shipments.jsp
+ create mode 100644 online-movie-store/web/shipmentsubmitted.jsp
+ create mode 100644 online-movie-store/web/shipmentupdated.jsp
+
+diff --git a/.gitignore b/.gitignore
+index b4f3f4b..572c103 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -1 +1,4 @@
+-/interface copy/dist/
+\ No newline at end of file
++/interface copy/dist/
++/online-movie-store/nbproject/private/
++/online-movie-store/build/
++/online-movie-store/dist/
+\ No newline at end of file
+diff --git a/online-movie-store/build/web/home.html b/online-movie-store/build/web/home.html
+index 3182fb0..1dd764c 100644
+--- a/online-movie-store/build/web/home.html
++++ b/online-movie-store/build/web/home.html
+@@ -124,6 +124,9 @@ and open the template in the editor.
+     <li class="menu-item menu-item-type-post_type menu-item-object-page current-menu-item">
+         <a href="/nonstop"   data-label="Nonstop"><h2>Shop</h2></a>
+     </li>
++    <li class="menu-item menu-item-type-post_type menu-item-object-page current-menu-item">
++        <a href="shipments.jsp"   data-label="Shipments"><h2>Shipments</h2></a>
++    </li>
+ 
+     <li class="menu-item menu-item-type-post_type menu-item-object-page current-menu-item">
+         <a href="/watch-live"   data-label="WatchLive"><h2>Watch Live TV</h2></a>
+diff --git a/online-movie-store/src/java/wsd/controller/LogConnServlet.java b/online-movie-store/src/java/wsd/controller/LogConnServlet.java
+index e429f6f..66886f1 100644
+--- a/online-movie-store/src/java/wsd/controller/LogConnServlet.java
++++ b/online-movie-store/src/java/wsd/controller/LogConnServlet.java
+@@ -23,6 +23,7 @@
+    public class LogConnServlet extends HttpServlet {
+        private DBConnector db;
+        private DBOrderManager manager;
++       private DBShipmentManager shipmentManager;
+        private Connection conn;
+ 
+        @Override //Create and instance of DBConnector for the deployment session
+@@ -42,11 +43,13 @@
+            conn = db.openConnection();       
+            try {
+                manager = new DBOrderManager(conn);
++               shipmentManager = new DBShipmentManager(conn);
+            } catch (SQLException ex) {
+                Logger.getLogger(LogConnServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            session.setAttribute("db", db);
+            session.setAttribute("manager", manager);
++           session.setAttribute("shipmentManager", shipmentManager);
+            session.setAttribute("conn", conn);
+        }   
+ 
+diff --git a/online-movie-store/src/java/wsd/model/Shipment.java b/online-movie-store/src/java/wsd/model/Shipment.java
+new file mode 100644
+index 0000000..6a7ae7b
+--- /dev/null
++++ b/online-movie-store/src/java/wsd/model/Shipment.java
+@@ -0,0 +1,74 @@
++/*
++ * To change this license header, choose License Headers in Project Properties.
++ * To change this template file, choose Tools | Templates
++ * and open the template in the editor.
++ */
++package wsd.model;
++
++public class Shipment {
++    private int ID;
++    private int orderID;
++    private String date;
++    private int userID;
++    private String address;
++    private String shipmentType;
++
++    public int getID() {
++        return ID;
++    }
++
++    public void setID(int ID) {
++        this.ID = ID;
++    }
++
++    public Shipment(int ID, int orderID, int userID, String date, String address, String shipmentType) {
++        this.ID = ID;
++        this.orderID = orderID;
++        this.date = date;
++        this.userID = userID;
++        this.address = address;
++        this.shipmentType = shipmentType;
++    }
++
++    public int getOrderID() {
++        return orderID;
++    }
++
++    public void setOrderID(int orderID) {
++        this.orderID = orderID;
++    }
++
++    public String getDate() {
++        return date;
++    }
++
++    public void setDate(String date) {
++        this.date = date;
++    }
++
++    public int getUserID() {
++        return userID;
++    }
++
++    public void setUserID(int userID) {
++        this.userID = userID;
++    }
++
++    public String getAddress() {
++        return address;
++    }
++
++    public void setAddress(String address) {
++        this.address = address;
++    }
++
++    public String getShipmentType() {
++        return shipmentType;
++    }
++
++    public void setShipmentType(String shipmentType) {
++        this.shipmentType = shipmentType;
++    }
++    
++    
++}
+diff --git a/online-movie-store/src/java/wsd/model/dao/DB.java b/online-movie-store/src/java/wsd/model/dao/DB.java
+deleted file mode 100644
+index 36ff7ea..0000000
+--- a/online-movie-store/src/java/wsd/model/dao/DB.java
++++ /dev/null
+@@ -1,16 +0,0 @@
+-package wsd.model.dao;
+-
+-import java.sql.Connection;
+-
+-/**
+- * Super class of DAO classes that manager connection and operation with the database
+- * @author Christopher Wong
+- */
+-public abstract class DB {
+-    protected String URL = "jdbc:derby://localhost:1527/movie-store";//replace empty-string with jdbc:derby local host url
+-    protected String db = "movie-store";//name of the database
+-    protected String dbuser = "app";//db root user
+-    protected String dbpass = "admin"; //db root password
+-    protected String driver = "org.apache.derby.jdbc.ClientDriver"; //jdbc client driver - built in with NetBeans
+-    protected Connection conn; //connection null-instance to be initialized in sub-classes
+-}
+diff --git a/online-movie-store/src/java/wsd/model/dao/DBShipmentManager.java b/online-movie-store/src/java/wsd/model/dao/DBShipmentManager.java
+new file mode 100644
+index 0000000..eda912b
+--- /dev/null
++++ b/online-movie-store/src/java/wsd/model/dao/DBShipmentManager.java
+@@ -0,0 +1,149 @@
++/*
++ * To change this license header, choose License Headers in Project Properties.
++ * To change this template file, choose Tools | Templates
++ * and open the template in the editor.
++ */
++package wsd.model.dao;
++
++import java.sql.*;
++import java.util.ArrayList;
++import java.util.List;
++import java.util.logging.Level;
++import java.util.logging.Logger;
++import wsd.controller.LogConnServlet;
++import wsd.model.Shipment;
++
++public class DBShipmentManager {
++
++    private Statement st;
++
++    public DBShipmentManager() {
++        DBConnector db = null;
++        try {
++            db = new DBConnector();
++        } catch (ClassNotFoundException | SQLException ex) {
++            Logger.getLogger(LogConnServlet.class.getName()).log(Level.SEVERE, null, ex);
++        }
++        try {
++            Connection conn = db.openConnection();
++            st = conn.createStatement();
++        } catch (SQLException ex) {
++            Logger.getLogger(DBShipmentManager.class.getName()).log(Level.SEVERE, null, ex);
++        }
++
++    }
++
++    public DBShipmentManager(Connection conn) throws SQLException {
++        st = conn.createStatement();
++    }
++
++    //Find shipment by ID in the database
++    public Shipment findShipment(int shipmentID) throws SQLException {
++        //setup the select sql query string
++        String searchQueryString = "select * from Shipments where ID="
++                + shipmentID;
++        //execute this query using the statement field
++        //add the results to a ResultSet
++        ResultSet rs = st.executeQuery(searchQueryString);
++        //search the ResultSet for a student using the parameters
++        boolean hasShipment = rs.next();
++        Shipment shipmentFromDB = null;
++
++        if (hasShipment) {
++
++            int ID = Integer.parseInt(rs.getString("ID"));
++            String date = rs.getString("date");
++            int uID = Integer.parseInt(rs.getString("userID"));
++            int orderID = Integer.parseInt(rs.getString("orderID"));
++            String address = rs.getString("address");
++            String shipmentType = rs.getString("shipmentType");
++
++            shipmentFromDB = new Shipment(ID, orderID, uID, date, address, shipmentType);
++        }
++
++        rs.close();
++        // st.close();
++
++        return shipmentFromDB;
++    }
++
++    public List<Shipment> getAllShipment() {
++        List<Shipment> shipments = new ArrayList<Shipment>();
++        String sql = "select * from shipments";
++
++        try {
++            ResultSet rs = st.executeQuery(sql);
++            while (rs.next()) {
++                int ID = Integer.parseInt(rs.getString("ID"));
++                String date = rs.getString("date");
++                int uID = Integer.parseInt(rs.getString("userID"));
++                int orderID = Integer.parseInt(rs.getString("orderID"));
++                String address = rs.getString("address");
++                String shipmentType = rs.getString("shipmentType");
++                Shipment shipment = new Shipment(ID, orderID, uID, date, address, shipmentType);
++                shipments.add(shipment);
++            }
++        } catch (SQLException e) {
++            System.err.print(e);
++        }
++        return shipments;
++    }
++
++    public List<Shipment> getShipment(String shipmentID, String date) {
++        List<Shipment> shipments = getAllShipment();
++        if (shipmentID == null && date == null) {
++            return shipments;
++        }
++        if (shipmentID.isEmpty() && date.isEmpty()) {
++            return shipments;
++        }
++
++        List<Shipment> results = new ArrayList<>();
++        for (Shipment shipment: shipments) {
++            if(shipmentID !=null && !shipmentID.isEmpty() && shipment.getID() == Integer.parseInt(shipmentID)) {
++                results.add(shipment);
++            }
++            else if(date != null && shipment.getDate().equals(date)) {
++                results.add(shipment);
++            }
++        }
++        return results;
++    }
++
++    //Add a submitted shipment into the database
++    public void addShipment(int shipmentID, int orderID, int userID, String date,
++            String address, String shipmentType) throws SQLException {
++        //code for add-operation
++        String createQueryString = "INSERT INTO shipments VALUES (" + shipmentID
++                + ", " + userID + ", " + orderID + ", '" + date + "', '" + address + "', '" + shipmentType + "')";
++        boolean shipmentCreated = st.executeUpdate(createQueryString) > 0;
++
++        if (shipmentCreated) {
++            System.out.println("shipment created");
++        } else {
++            System.out.println("shipment not created");
++        }
++    }
++
++    //update shipment details in the database
++    public void updateShipment(int shipmentID, int orderID, int userID, String date,
++            String address, String shipmentType) throws SQLException {
++        //code for update-operation
++
++        String updateQueryString = "update Shipments set ID = " + shipmentID
++                + ", orderID= " + orderID + ", userID = " + userID 
++                + ", date = '"+ date + "', address = '" + address + "', "
++                + " shipmentType = '" + shipmentType + "' where ID=" + shipmentID + "";
++        System.out.println(updateQueryString);
++        st.executeUpdate(updateQueryString);
++
++    }
++
++    //change status of shipment to cancelled from the database
++    public void deleShipment(int shipmentID) throws SQLException {
++        //code for delete-operation
++
++        String updateQueryString = "delete from Shipments where ID = " + shipmentID;
++        st.executeUpdate(updateQueryString);
++    }
++}
+diff --git a/online-movie-store/web/createshipment.jsp b/online-movie-store/web/createshipment.jsp
+new file mode 100644
+index 0000000..6777960
+--- /dev/null
++++ b/online-movie-store/web/createshipment.jsp
+@@ -0,0 +1,84 @@
++<%-- 
++    Document   : createorder - 
++    Created on : 18/05/2019, 6:42:03 PM
++    Author     : Christopher Wong
++--%>
++
++<%@page import="wsd.model.dao.*"%>
++<%@page import="wsd.model.*"%>
++<%@page import="wsd.controller.*"%>
++<%@page import="java.util.*"%>
++<%@page import="java.sql.*"%>
++<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
++<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
++<html>
++    <head>
++        <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
++        <link rel="stylesheet" href="css/demo.css"> 
++        <script type="text/javascript" src="js/script.js"></script>
++        <title>Create Shipment</title>
++    </head>
++    <%
++        //String log;
++        // User user = (User) session.getAttribute("user");
++        //DBOrderManager manager = (DBOrderManager)session.getAttribute("manager");
++        String userID = "5555";
++        /* if (user != null) {
++            log = " &lt " + user.getName() + " &gt";
++        } else {
++            log = " &lt " + "Guest User" + " &gt";
++        }*/
++
++        // Movie movie = (movie) session.getAttribute("movie"); 
++        String orderID = "1352";
++        Random random = new Random();
++        String ID = "" + random.nextInt(10000);
++    %>
++    <body  bgcolor="#CC9933" >
++        <div><span class="time" id="time" ></span></div>
++        <center>
++            <h1>Online Movie Store: Create Shipment for order</h1> <br>
++            <button class="button" type="button" onclick="location.href = 'home.html'" > Home Page </button><br>
++            <h2>Enter shipment details:</h2> 
++        </center>
++        <form action="shipmentsubmitted.jsp" method="post">
++            <center>
++                <table cellpadding="5" >
++                    <tr>
++                        <td>Date:</td>
++                         <%java.text.DateFormat df = new java.text.SimpleDateFormat("yyyy-MM-dd"); %>
++                         <td><input type="date" name="date" value=<%= df.format(new java.util.Date()) %> readonly></td>
++                    </tr>
++                    <tr>
++                        <td>Shipment ID:</td>
++                        <td><input type="number" name="ID" value=<%=ID%> required></td>
++                    </tr>
++                    <tr>
++                        <td>User ID:</td>
++                        <td><input type="number" name="userID" value=<%=userID%> required></td>
++                    </tr>
++                    <tr>
++                        <td>Order ID:</td>
++                        <td><input type="number" name="orderID" value=<%=orderID%> required></td>
++                    </tr>
++                    <tr>
++                        <td>Address</td>
++                        <td><input type="text" name="address" value="" required></td>
++                    </tr>
++                    <tr>
++                        <td>Shipment type</td>
++                        <td><input type="text" name="shipmentType" value="" required></td>
++                    </tr>
++                    <tr><td></td>
++                        <td>
++                            <input class="button" type="submit" value="Submit"> 
++                            &nbsp; 
++                            <button class="button" type="button" onclick="location.href = 'home.html'" > Home Page </button>
++                        </td>
++                    </tr>
++                </table>
++            </center>
++        </form>
++        <jsp:include page="/ConnServlet" flush="true" />
++    </body>
++</html>
+diff --git a/online-movie-store/web/editshipment.jsp b/online-movie-store/web/editshipment.jsp
+new file mode 100644
+index 0000000..bdc800a
+--- /dev/null
++++ b/online-movie-store/web/editshipment.jsp
+@@ -0,0 +1,72 @@
++<%-- 
++    Document   : createorder - 
++    Created on : 18/05/2019, 6:42:03 PM
++    Author     : Christopher Wong
++--%>
++
++<%@page import="wsd.model.dao.*"%>
++<%@page import="wsd.model.*"%>
++<%@page import="wsd.controller.*"%>
++<%@page import="java.util.*"%>
++<%@page import="java.sql.*"%>
++<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
++<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
++<html>
++    <head>
++        <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
++        <link rel="stylesheet" href="css/demo.css"> 
++        <script type="text/javascript" src="js/script.js"></script>
++        <title>Edit Shipment</title>
++    </head>
++    <%
++        DBShipmentManager manager = new DBShipmentManager();
++        Shipment shipment = manager.findShipment(Integer.parseInt(request.getParameter("ID")));
++
++    %>
++    <body  bgcolor="#CC9933" >
++        <div><span class="time" id="time" ></span></div>
++        <center>
++            <h1>Online Movie Store: Create Shipment for order</h1> <br>
++            <button class="button" type="button" onclick="location.href = 'home.html'" > Home Page </button><br>
++            <h2>Enter shipment details:</h2> 
++        </center>
++        <form action="shipmentupdated.jsp" method="post">
++            <center>
++                <table cellpadding="5" >
++                    <tr>
++                        <td>Date:</td>
++                        <td><input type="date" name="date" value="<%= shipment.getDate() %>"></td>                                   
++                    </tr>
++                    <tr>
++                        <td>Shipment ID:</td>
++                        <td><input type="number" name="ID" value="<%=shipment.getID()%>" readonly required></td>
++                    </tr>
++                    <tr>
++                        <td>User ID:</td>
++                        <td><input type="number" name="userID" value="<%=shipment.getUserID()%>" required></td>
++                    </tr>
++                    <tr>
++                        <td>Order ID:</td>
++                        <td><input type="number" name="orderID" value="<%=shipment.getOrderID()%>" required></td>
++                    </tr>
++                    <tr>
++                        <td>Address</td>
++                        <td><input type="text" name="address" value="<%=shipment.getAddress()%>" required></td>
++                    </tr>
++                    <tr>
++                        <td>Shipment type</td>
++                        <td><input type="text" name="shipmentType" value="<%=shipment.getShipmentType()%>" required></td>
++                    </tr>
++                    <tr><td></td>
++                        <td>
++                            <input class="button" type="submit" value="Update"> 
++                            &nbsp; 
++                            <button class="button" type="button" onclick="location.href = 'home.html'" > Home Page </button>
++                        </td>
++                    </tr>
++                </table>
++            </center>
++        </form>
++        <jsp:include page="/ConnServlet" flush="true" />
++    </body>
++</html>
+diff --git a/online-movie-store/web/home.html b/online-movie-store/web/home.html
+index 3182fb0..1dd764c 100644
+--- a/online-movie-store/web/home.html
++++ b/online-movie-store/web/home.html
+@@ -124,6 +124,9 @@ and open the template in the editor.
+     <li class="menu-item menu-item-type-post_type menu-item-object-page current-menu-item">
+         <a href="/nonstop"   data-label="Nonstop"><h2>Shop</h2></a>
+     </li>
++    <li class="menu-item menu-item-type-post_type menu-item-object-page current-menu-item">
++        <a href="shipments.jsp"   data-label="Shipments"><h2>Shipments</h2></a>
++    </li>
+ 
+     <li class="menu-item menu-item-type-post_type menu-item-object-page current-menu-item">
+         <a href="/watch-live"   data-label="WatchLive"><h2>Watch Live TV</h2></a>
+diff --git a/online-movie-store/web/shipmentdelete.jsp b/online-movie-store/web/shipmentdelete.jsp
+new file mode 100644
+index 0000000..6b242e3
+--- /dev/null
++++ b/online-movie-store/web/shipmentdelete.jsp
+@@ -0,0 +1,21 @@
++<%-- 
++    Document   : myorders - shows list of order history
++    Created on : 21/05/2019, 5:17:27 PM
++    Author     : Christopher Wong
++--%>
++<%@page import="wsd.model.dao.*"%>
++<%@page import="wsd.model.*"%>
++<%@page import="wsd.controller.*"%>
++<%@page import="java.util.*"%>
++<%@page import="java.sql.*"%>
++<%@page contentType="text/html" pageEncoding="UTF-8"%>
++<%
++    int ID = Integer.parseInt(request.getParameter("ID"));
++
++    DBShipmentManager manager = new DBShipmentManager();
++    manager.deleShipment(ID);
++    
++    response.sendRedirect("shipments.jsp");
++%>
++
++
+diff --git a/online-movie-store/web/shipments.jsp b/online-movie-store/web/shipments.jsp
+new file mode 100644
+index 0000000..0c7bf7e
+--- /dev/null
++++ b/online-movie-store/web/shipments.jsp
+@@ -0,0 +1,94 @@
++<%-- 
++    Document   : createorder - 
++    Created on : 18/05/2019, 6:42:03 PM
++    Author     : Christopher Wong
++--%>
++
++<%@page import="wsd.model.dao.*"%>
++<%@page import="wsd.model.*"%>
++<%@page import="wsd.controller.*"%>
++<%@page import="java.util.*"%>
++<%@page import="java.sql.*"%>
++<%@page contentType="text/html" pageEncoding="UTF-8"%>
++<%
++    DBShipmentManager manager = new DBShipmentManager();
++    
++    String ID = request.getParameter("ID");
++    String date = request.getParameter("date");
++    List<Shipment> shipments = manager.getShipment(ID, date);
++    
++%>
++<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
++<html>
++    <head>
++        <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
++        <link rel="stylesheet" href="css/demo.css"> 
++        <script type="text/javascript" src="js/script.js"></script>
++        <title>All Shipment</title>
++        <style>
++table {
++  font-family: arial, sans-serif;
++  border-collapse: collapse;
++  width: 100%;
++}
++
++td, th {
++  border: 1px solid #dddddd;
++  text-align: left;
++  padding: 8px;
++}
++
++tr:nth-child(even) {
++  background-color: #dddddd;
++}
++</style>
++    </head>
++
++    <body  bgcolor="#CC9933" >
++        <div><span class="time" id="time" ></span></div>
++        <center>
++            <h1>Online Movie Store: All Shipments</h1> <br>
++            <button class="button" type="button" onclick="location.href = 'home.html'" > Home Page </button><br>
++        </center>
++        
++        
++        <form>
++            <h4>Search</h4>
++            <label>Shipment ID</label>
++            <input type="number" name="ID" value="<%=ID%>">
++            <label>Date</label>
++            <input type="text" name="date" value="<%=date%>">
++            <button type="submit">Search</button>
++        </form>
++        
++        
++        <hr>
++        <table  width="100%" >
++            <tr>
++                <th>Shipment ID</th>
++                <th>User ID</th>
++                <th>Order ID</th>
++                <th>Date</th>
++                <th>Address</th>
++                <th>Shipment Type</th>
++                <th>Action</th>
++            </tr>
++            <% for(Shipment shipment: shipments) { %>
++                <tr>
++                    <td><a href="editshipment.jsp?ID=<%= shipment.getID() %>"><%= shipment.getID() %></a></td>
++                    <td><%= shipment.getUserID() %></td>
++                    <td><%= shipment.getOrderID() %></td>
++                    <td><%= shipment.getDate() %></td>
++                    <td><%= shipment.getAddress() %></td>
++                    <td><%= shipment.getShipmentType()%></td>
++                    <td><a href="shipmentdelete.jsp?ID=<%= shipment.getID() %>">Delete</a></td>
++                </tr>
++            
++            <% } %>
++        </table>
++        
++        <br>
++        <a href="createshipment.jsp">Create new shipment</a>
++        <jsp:include page="/ConnServlet" flush="true" />
++    </body>
++</html>
+diff --git a/online-movie-store/web/shipmentsubmitted.jsp b/online-movie-store/web/shipmentsubmitted.jsp
+new file mode 100644
+index 0000000..c5e4f98
+--- /dev/null
++++ b/online-movie-store/web/shipmentsubmitted.jsp
+@@ -0,0 +1,27 @@
++<%-- 
++    Document   : myorders - shows list of order history
++    Created on : 21/05/2019, 5:17:27 PM
++    Author     : Christopher Wong
++--%>
++<%@page import="wsd.model.dao.*"%>
++<%@page import="wsd.model.*"%>
++<%@page import="wsd.controller.*"%>
++<%@page import="java.util.*"%>
++<%@page import="java.sql.*"%>
++<%@page contentType="text/html" pageEncoding="UTF-8"%>
++<%
++    String date = request.getParameter("date");
++    int ID = Integer.parseInt(request.getParameter("ID"));
++    int userID = Integer.parseInt(request.getParameter("userID"));
++    int orderID = Integer.parseInt(request.getParameter("orderID"));
++    String address = request.getParameter("address");
++    String shipmentType = request.getParameter("shipmentType");
++    System.out.println("here2");
++
++    DBShipmentManager manager = new DBShipmentManager();
++    manager.addShipment(ID, orderID, userID, date, address, shipmentType);
++    
++    response.sendRedirect("shipments.jsp");
++%>
++
++
+diff --git a/online-movie-store/web/shipmentupdated.jsp b/online-movie-store/web/shipmentupdated.jsp
+new file mode 100644
+index 0000000..3ed7655
+--- /dev/null
++++ b/online-movie-store/web/shipmentupdated.jsp
+@@ -0,0 +1,27 @@
++<%-- 
++    Document   : myorders - shows list of order history
++    Created on : 21/05/2019, 5:17:27 PM
++    Author     : Christopher Wong
++--%>
++<%@page import="wsd.model.dao.*"%>
++<%@page import="wsd.model.*"%>
++<%@page import="wsd.controller.*"%>
++<%@page import="java.util.*"%>
++<%@page import="java.sql.*"%>
++<%@page contentType="text/html" pageEncoding="UTF-8"%>
++<%
++    String date = request.getParameter("date");
++    int ID = Integer.parseInt(request.getParameter("ID"));
++    int userID = Integer.parseInt(request.getParameter("userID"));
++    int orderID = Integer.parseInt(request.getParameter("orderID"));
++    String address = request.getParameter("address");
++    String shipmentType = request.getParameter("shipmentType");
++    System.out.println("here2");
++
++    DBShipmentManager manager = new DBShipmentManager();
++    manager.updateShipment(ID, orderID, userID, date, address, shipmentType);
++    
++    response.sendRedirect("shipments.jsp");
++%>
++
++
+-- 
+2.20.1 (Apple Git-117)
+

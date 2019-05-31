@@ -15,7 +15,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="css/demo.css"> 
         <script type="text/javascript" src="js/script.js"></script>
-        <title>My Orders</title>
+        <title>Order Submitted</title>
     </head>
     <%
         String date = request.getParameter("date");
@@ -77,10 +77,10 @@
         </table>
         <%
             //Activate the database add-function once DBManager functions are completed
-            //DBOrderManager manager = (DBOrderManager) session.getAttribute("manager");
-            //Order order = new Order(orderID, date, userID, movieID, status);
-            //manager.addOrder(orderID, date, userID, movieID, status);
-            //session.setAttribute("order", order);
+            DBOrderManager manager = (DBOrderManager) session.getAttribute("manager");
+            Order order = new Order(orderID, date, userID, movieID, status);
+            manager.addOrder(orderID, date, userID, movieID, status);
+            session.setAttribute("order", order);
         %>
         <% } else if (request.getParameter("userID") != null) { %>
         <b>Thank You <%{/*user */} %></b><br>
