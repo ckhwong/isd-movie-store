@@ -19,55 +19,67 @@
         <title>Create Order</title>
     </head>
     <%
-        //String log;
-        // User user = (User) session.getAttribute("user");
-        //DBOrderManager manager = (DBOrderManager)session.getAttribute("manager");
-        String userID = "55550000";
-        /* if (user != null) {
+        //DBMovieManager manager = (DBMovieManager)session.getAttribute("manager");
+        String movieID = request.getParameter("order");
+        String log = "";
+        int guestID = 9999999;
+
+        DBConnector connector = new DBConnector();
+        Connection conn = connector.openConnection();
+        DBOrderManager manager = (DBOrderManager) session.getAttribute("manager");
+        
+        User user = (User) session.getAttribute("userLogin");
+
+        if (user != null) {
             log = " &lt " + user.getName() + " &gt";
+            guestID = user.getID();
         } else {
             log = " &lt " + "Guest User" + " &gt";
-        }*/
-
-        // Movie movie = (movie) session.getAttribute("movie"); 
-        String movieID = "4448444";
+        }
+        
+        
     %>
     <body onload="startTime()"  bgcolor="#CC9933" >
         <div><span class="time" id="time" ></span></div>
         <center>
             <h1>Online Movie Store: Create Order</h1> <br>
-            <button class="button" type="button" onclick="location.href = 'home.html'" > Home Page </button><br>
+            <button class="button" type="button" onclick="location.href = 'home.jsp'" > Home Page </button>
+            <button class="button" type="button" onclick="location.href = 'movies.jsp'" > Movies </button>
+            <button class="button" type="button" onclick="location.href = 'profile.jsp'" > Account </button><br>
             <h2>Check order details:</h2> 
         </center>
+        
         <form action="ordersubmitted.jsp" method="post">
             <center>
-                <% {/*if (user != null) {
-                        if (user.getID() != 99999999){ */
-                } %> 
-                <% {/* //fill table here */} %> 
-                <% {/*} else { */} %> 
                 <table cellpadding="5" >
-                    <% {/*if (movie != null) {*/ } %>
                     <tr>
                         <td>Date:</td>
-                         <%java.text.DateFormat df = new java.text.SimpleDateFormat("dd/MM/yyyy"); %>
-                         <td><input type="text" style="text-align: center" name="date" value=<%= df.format(new java.util.Date()) %> readonly></td>
+                        <%java.text.DateFormat df = new java.text.SimpleDateFormat("dd/MM/yyyy");%>
+                        <td><input type="text" style="text-align: center" name="date" value=<%= df.format(new java.util.Date())%> readonly></td>
                     </tr>
                     <tr>
-                        <td>User ID:</td>
-                        <td><input type="text" name="userID" value=<%=userID%> readonly></td>
+                        <td><% if (user != null) { %> 
+                            User ID:
+                            <% } else {%>
+                            Guest ID:
+                            <% } %></td>
+                        <td>
+                            <% if (user != null) { %>
+                            <input type="text" name="userID" value="<%=user.getID() %>" readonly>
+                            <% } else {%>
+                            <input type="text" name="userID" value="<%=guestID%>"  readonly>
+                            <% } %>
+                        </td>
                     </tr>
-                    <% {/*if (movie != null) {*/ } %>
                     <tr>
                         <td>Movie ID:</td>
                         <td><input type="text" name="movieID" value=<%=movieID%> readonly></td>
                     </tr>
-                    <% {/*}*/ } %>
                     <tr><td></td>
                         <td>
                             <input class="button" type="submit" value="Submit"> 
                             &nbsp; 
-                            <button class="button" type="button" onclick="location.href = 'home.html'" > Home Page </button>
+                            <button class="button" type="button" onclick="location.href = 'movies.jsp'" > Back </button>
                         </td>
                     </tr>
                 </table>
