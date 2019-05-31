@@ -36,7 +36,12 @@
             <tr><td align="right">
                     <u><a class="link" href="logout.jsp">Logout</a></u>
                 </td>
-            </tr>                  
+            </tr> 
+            <tr>
+                <td align="right">
+                    <u><a class="link" href="createlog.jsp">[ADMIN] Create Log</a></u>
+                </td>
+            </tr>
         </table>
         
         <p>
