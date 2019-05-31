@@ -6,6 +6,8 @@
 package wsd.model.dao;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import wsd.model.Order;
 
 /**
@@ -33,10 +35,10 @@ public class DBOrderManager {
                  
          if(hasOrder){
          
-             int oID = Integer.parseInt(rs.getString("orderID"));
+             int oID = rs.getInt("orderID");
              String date = rs.getString("date");
-             int uID = Integer.parseInt(rs.getString("userID"));
-             int mID = Integer.parseInt(rs.getString("movieID"));
+             int uID = rs.getInt("userID");
+             int mID = rs.getInt("movieID");
              String status = rs.getString("status");
                
              orderFromDB = new Order (oID, date, uID, mID, status);
@@ -73,20 +75,26 @@ public class DBOrderManager {
     }
 
     //update order details in the database
-    public void updateOrder(int orderID, String deliveryType, 
-            int discount) throws SQLException {
+    public List<Order> showOrder(int userID) throws SQLException {
         //code for update-operation
          
-        String updateQueryString = "update Orders set deliveryType = '" + deliveryType 
-                + "', discount= '" + discount + "' where orderID='" + orderID + "'";
-        boolean orderUpdated = st.executeUpdate(updateQueryString) > 0;
+        String updateQueryString = "SELECT * FROM ORDERS FETCH FIRST 100 ROWS ONLY";
+        ResultSet rs = st.executeQuery(updateQueryString);
+        //search the ResultSet for an order using the parameters
+        boolean hasOrder = rs.next();
          
-         if (orderUpdated){
-         System.out.println("order updated");
+        List<Order> list = new ArrayList<>();
+        if (hasOrder) {
+            System.out.println("hasOrder");
+            //while(hasOrder){
+                list.add(new Order(rs.getInt("orderid"), rs.getString("date"),
+                        rs.getInt("userid"), rs.getInt("movieid"), rs.getString("status")));
+            //}
          }
-         else {
-         System.out.println("order not updated");
-         }
+        else  {
+            System.out.println("No orders found");
+        }
+        return list;
     }
     
     //change status of order to cancelled from the database
